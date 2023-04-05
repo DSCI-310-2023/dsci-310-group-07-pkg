@@ -20,5 +20,5 @@ a message of saved variable information
 Save the variable into file as .rds
 }
 \examples{
-saveVar(10,"num.rds","variable")
+#saveVar(10,"num.rds","saved")
 }
