@@ -18,4 +18,5 @@ Imports:
     stats,
     here,
     utils,
-    ggplot2
+    ggplot2,
+    glmnet
