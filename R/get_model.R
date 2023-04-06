@@ -28,18 +28,11 @@ get_tr_tst <- function(automobile, set = "at") {
 
   #dropping engine-location variable
   drop <- "engine-location"
-  df_no_eng_loc <- automobile[, !(names(automobile) %in% drop)]
+  df_no_eng_loc <- automobile[,!(names(automobile) %in% drop)]
 
 
-  #dropping ? level in num-of-doors
-  df_no_eng_loc$`num-of-doors` <-
-    as.character(df_no_eng_loc$`num-of-doors`)
-
-  clean_automobile <-
-    df_no_eng_loc %>% filter(`num-of-doors` != '?') %>% na.omit()
-
-  clean_automobile$`num-of-doors` <-
-    as.factor(clean_automobile$`num-of-doors`)
+  #dropping NA in num-of-doors
+  clean_automobile <- df_no_eng_loc %>% na.omit()
 
   #split data into training and testing
   clean_automobile$ID <- 1:nrow(clean_automobile)
@@ -53,8 +46,8 @@ get_tr_tst <- function(automobile, set = "at") {
                           by = "ID")
 
   #remove ID variables
-  training_df_at <- training_df[, -26]
-  testing_df_at <- testing_df [, -26]
+  training_df_at <- training_df[,-26]
+  testing_df_at <- testing_df [,-26]
 
   drops <-
     c(
@@ -67,8 +60,9 @@ get_tr_tst <- function(automobile, set = "at") {
       "fuel-system"
     )
   training_df_sub <-
-    training_df_at[, !(names(training_df_at) %in% drops)]
-  testing_df_sub <- testing_df_at[, !(names(testing_df_at) %in% drops)]
+    training_df_at[,!(names(training_df_at) %in% drops)]
+  testing_df_sub <-
+    testing_df_at[,!(names(testing_df_at) %in% drops)]
 
 
 
@@ -111,11 +105,11 @@ get_tr_tst <- function(automobile, set = "at") {
 get_trm_tsm <-
   function(training_df_sub, testing_df_sub, set = "training") {
     #training matrix
-    x_train_mat <- model.matrix(~ ., training_df_sub[, -18])
+    x_train_mat <- model.matrix( ~ ., training_df_sub[,-18])
     y_train_mat <- training_df_sub$price
 
     #testing matrix
-    x_test_mat <- model.matrix(~ ., testing_df_sub[, -18])
+    x_test_mat <- model.matrix( ~ ., testing_df_sub[,-18])
     y_test_mat <- testing_df_sub$price
 
     if (set == "training") {
@@ -164,7 +158,7 @@ get_model_plot <-
         )
       if (ask == "plot") {
         png(
-          file = here::here("analysis/figs/lasso.png"),
+          filename = here::here("analysis/figs/lasso.png"),
           width = 600,
           height = 400
         )
@@ -202,7 +196,7 @@ get_model_plot <-
         )
       if (ask == "plot") {
         png(
-          file = here::here("analysis/figs/ridge.png"),
+          filename = here::here("analysis/figs/ridge.png"),
           width = 600,
           height = 400
         )
@@ -267,17 +261,17 @@ get_er_cv <-
     errors <- matrix(NA, ncol = 5, nrow = 10)
     for (fold in seq_len(kfolds)) {
       test_rows <- fold_labels == fold
-      train <- training_df_sub[!test_rows,]
-      test <- training_df_sub[test_rows,]
+      train <- training_df_sub[!test_rows, ]
+      test <- training_df_sub[test_rows, ]
 
       #since the matrix size for LASSO and Ridge is different from OLS, we will be using different training and testing sets for OLS
-      train_ols <- training_df_at[!test_rows,]
-      test_ols <- training_df_at[test_rows,]
+      train_ols <- training_df_at[!test_rows, ]
+      test_ols <- training_df_at[test_rows, ]
 
-      x_train_mat <- model.matrix(~ ., train[, -18])
+      x_train_mat <- model.matrix( ~ ., train[,-18])
       y_train_mat <- train$price
 
-      x_test_mat <- model.matrix(~ ., test[, -18])
+      x_test_mat <- model.matrix( ~ ., test[,-18])
       y_test_mat <- test$price
 
       # We fit the LASSO and Ridge regression models using lambda values found using cross-validation.
@@ -319,66 +313,12 @@ get_er_cv <-
       #the variable has been removed in order to successfully create our training and testing sets for our OLS model.
 
       #building a matrix for the training set
-      ols_x_red_train <- train_ols %>% as.data.frame() %>%
-        dplyr::select(
-          symboling ,
-          `normalized-losses` ,
-          make ,
-          `fuel-type` ,
-          aspiration ,
-          `num-of-doors` ,
-          `body-style` ,
-          `drive-wheels` ,
-          `wheel-base` ,
-          length ,
-          width ,
-          height ,
-          `curb-weight` ,
-          `engine-type` ,
-          `num-of-cylinders` ,
-          `engine-size` ,
-          `fuel-system` ,
-          bore ,
-          stroke ,
-          `compression-ratio` ,
-          horsepower ,
-          `peak-rpm` ,
-          `city-mpg` ,
-          `highway-mpg`
-        )
-
-      ols_x_mat_train <- model.matrix( ~ ., ols_x_red_train)
+      ols_x_red_train <- as.data.frame(train_ols)[, c(1:8, 9:25)]
+      ols_x_mat_train <- model.matrix(~ ., ols_x_red_train)
 
       #building a matrix for the testing set
-      ols_x_red_test <-
-        test_ols %>% as.data.frame() %>% dplyr::select(
-          symboling ,
-          `normalized-losses` ,
-          make ,
-          `fuel-type` ,
-          aspiration ,
-          `num-of-doors` ,
-          `body-style` ,
-          `drive-wheels` ,
-          `wheel-base` ,
-          length ,
-          width ,
-          height ,
-          `curb-weight` ,
-          `engine-type` ,
-          `num-of-cylinders` ,
-          `engine-size` ,
-          `fuel-system` ,
-          bore ,
-          stroke ,
-          `compression-ratio` ,
-          horsepower ,
-          `peak-rpm` ,
-          `city-mpg` ,
-          `highway-mpg`
-        )
-
-      ols_x_mat_test <- model.matrix( ~ ., ols_x_red_test)
+      ols_x_red_test <- as.data.frame(test_ols)[, c(1:8, 9:25)]
+      ols_x_mat_test <- model.matrix(~ ., ols_x_red_test)
 
       # we know that when lambda = 0 and alpha=1, the glmnet() performs the same as lm
       ols_fs <-
