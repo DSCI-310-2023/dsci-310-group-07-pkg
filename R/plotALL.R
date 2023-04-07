@@ -90,7 +90,9 @@ get_bar <- function(x_val, name) {
 #' @examples
 #' plotAll(mtcars, c("mpg", "cyl"))
 plotAll <- function(df, nms) {
-  print(nms)
+  stopifnot("df should be data.frame" = is.data.frame(df))
+  stopifnot("nms should be strings" = is.character(nms))
+
   numcol <- ncol(df)
   plots <- list()
   i <- 1
