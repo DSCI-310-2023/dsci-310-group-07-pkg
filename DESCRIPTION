@@ -19,4 +19,5 @@ Imports:
     here,
     utils,
     ggplot2,
-    glmnet
+    glmnet,
+    covr
