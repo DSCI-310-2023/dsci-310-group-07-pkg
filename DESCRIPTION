@@ -6,7 +6,6 @@ Authors@R:
     person("Ning", "Wang", , role = c("aut", "cre")),
     person("Haobo(Harbor)", "Zhang", , role = c("aut", "cre")),
     person("Xiwen", "Wei", , role = c("aut", "cre"))
-    
 Description: This package is designed to assist in the exploration and visualization of data related to car attributes such as make, length, and other important factors that can affect pricing. The functions within the package allow users to preprocess the data, perform regression analysis, and evaluate model performance. 
 License: MIT + file LICENSE
 Encoding: UTF-8

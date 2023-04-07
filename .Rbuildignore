@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 ^saved
 ^\.github$
+^README\.Rmd$
