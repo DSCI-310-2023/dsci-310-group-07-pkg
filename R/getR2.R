@@ -21,6 +21,12 @@
 #' getR2(mtcars, 10)
 
 getR2 <- function(dat, n) {
+  # handle errors:
+  n <- as.integer(n)
+  stopifnot("dat must be a dataframe"= is.data.frame(dat))
+  stopifnot("n must be an integer" = (!is.na(n)))
+  stopifnot("n must be non-negative" = (n >= 0))
+
   numcol <- ncol(dat)
   # take out the response variable
   price <- unlist(dat[,numcol])

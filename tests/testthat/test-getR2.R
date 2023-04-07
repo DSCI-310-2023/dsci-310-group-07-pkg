@@ -15,3 +15,17 @@ test_that("getR2 does not work", {
   expect_equal(pull(fn_out[2][1]),'x2')
 
 })
+
+# tests for wrong inputs:
+test_that("Dataframe error handling for getR2()", {
+  expect_error(getR2("dataframe", 5),
+               "dat must be a dataframe")
+})
+
+test_that("#variables error handling for getR2()", {
+  expect_error(getR2(mtcars, "a"),
+               "n must be an integer")
+  expect_error(getR2(mtcars, -2),
+               "n must be non-negative")
+
+})
