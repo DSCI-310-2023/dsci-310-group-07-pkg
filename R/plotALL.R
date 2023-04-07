@@ -101,7 +101,6 @@ plotAll <- function(df, nms) {
   for (x in 1:(numcol-1)) {
     # var_name <- colnames(df[, x]) # name of the variable
     var_name <- colnames(df)[x]
-    print(var_name)
     if (var_name %in% nms) {
       # plot/plots will be generate for this variable
       values <- unlist(df[, x]) # values of the variable
