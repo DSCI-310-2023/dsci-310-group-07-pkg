@@ -9,6 +9,10 @@
 #' @examples
 #' #saveVar(10,"num.rds","saved")
 saveVar <- function(var, name, out_dir) {
+
+  # stop if the file name and path not valid
+  stopifnot("name and out_dir should be strings" = is.character(name) & is.character(out_dir))
+  stopifnot("name should end with .rds" = grepl("\\.rds$", name))
   full_dir <- here::here(out_dir)
   if (!dir.exists(full_dir)) {
     dir.create(full_dir)
