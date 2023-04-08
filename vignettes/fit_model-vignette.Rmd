@@ -1,8 +1,8 @@
 ---
-title: "carpriceprediction-vignette"
+title: "fit_model-vignette"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{carpriceprediction-vignette}
+  %\VignetteIndexEntry{fit_model-vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
