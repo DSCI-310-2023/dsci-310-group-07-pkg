@@ -31,7 +31,6 @@ In order to use the functions in the package, load the
 
 ``` r
 library(carpriceprediction)
-## basic example code
 ```
 
 In this example, we will use the actual `automobile` dataset. And the
