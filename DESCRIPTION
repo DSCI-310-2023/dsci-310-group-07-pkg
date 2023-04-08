@@ -3,9 +3,9 @@ Title: Predict Car Price Based on Certain Charateristics
 Version: 0.0.0.9000
 Authors@R: c(
     person("Jiaying", "Liao", , "jiaying.liao@qq.com", role = c("aut", "cre")),
-    person("Ning", "Wang", ,"first.last@example.com",  role = "aut"),
+    person("Ning", "Wang", ,"1198137403wn@gmail.com",  role = "aut"),
     person("Haobo(Harbor)", "Zhang", ,"harborz2000@gmail.com",  role = "aut"),
-    person("Xiwen", "Wei", ,"first.last@example.com",  role = "aut")
+    person("Xiwen", "Wei", ,"xiwen1026@yeah.net",  role = "aut")
   )
 Description: This package is designed to assist in the exploration and visualization of data related to car attributes such as make, length, and other important factors that can affect pricing. The functions within the package allow users to preprocess the data, perform regression analysis, and evaluate model performance. 
 License: MIT + file LICENSE
@@ -15,7 +15,9 @@ RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0),
     covr,
-    ggcheck
+    ggcheck,
+    knitr,
+    rmarkdown
 Remotes: 
     rstudio/ggcheck
 Config/testthat/edition: 3
@@ -25,4 +27,6 @@ Imports:
     here,
     utils,
     ggplot2,
-    glmnet
+    glmnet,
+    magrittr
+VignetteBuilder: knitr

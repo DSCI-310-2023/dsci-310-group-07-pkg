@@ -9,7 +9,7 @@
 #' @param x_val A vector of doubles
 #' @param name the label of x_val
 #'
-#' @export
+#' @noRd
 #'
 #' @return a histogram
 #'
@@ -34,7 +34,7 @@ get_hist <- function(x_val, name) {
 #'
 #' @return a scatter plot
 #'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' get_scatter(rnorm(10),rnorm(10),"num")
@@ -60,7 +60,7 @@ get_scatter <- function(x_val, y_val, name) {
 #'
 #' @return a bar plot
 #'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' get_bar(c("a","b","a"),"type")
