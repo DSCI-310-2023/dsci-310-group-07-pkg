@@ -168,7 +168,7 @@ lasso_mod_1se <- lasso_mods[[2]]
 lasso_cv <- lasso_mods[[3]]
 
 # visualize lasso_cv:
-get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")
+# get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")
 ```
 
 Similarly, for ridge regression:
@@ -190,7 +190,7 @@ ridge_mod_1se <- ridge_mods[[2]]
 ridge_cv <- ridge_mods[[3]]
 
 # visualize ridge_cv:
-get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")
+# get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")
 ```
 
 We can use `get_er_cv()` to combine all results in a table. Note that it
@@ -203,6 +203,14 @@ will also contain the *OLS Full Regression* for comparison.
 
 ``` r
 get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
+#> # A tibble: 5 × 2
+#>   Model                             R_MSE
+#>   <chr>                             <dbl>
+#> 1 LASSO Regression with minimum MSE 812. 
+#> 2 LASSO Regression with 1SE MSE     709. 
+#> 3 Ridge Regression with minimum MSE 808. 
+#> 4 LASSO Regression with 1SE MSE     856. 
+#> 5 OLS Full Regression                33.5
 
 # Will return: 
 #                               Model    R_MSE

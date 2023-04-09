@@ -32,7 +32,7 @@ With this package, you will be able to
 
 The **automobile** dataset contains 26 rows and 205 observations. The response variable is `price` and the others are explanatory variables. In this example, the dataset is loaded by `readRDS()` from *base R*.
 
-```{r load-automobile}
+```{r load-automobile, eval=FALSE}
 #install.packages('here')
 automobile <- readRDS(here::here("saved/automobile.rds"))
 head(automobile)
@@ -58,31 +58,25 @@ saveVar(var = automobile$price, name = "price.rds", out_dir = "result")
 
 The function `getR2()` allows you to get $R^2$ of the first `n` explanatory variables that explain most variations by fitting OLS model. The input variable `n` should be whole numbers from 1 to 25.
 
-```{r getR2}
+```{r getR2, eval=FALSE}
 (getR2(dat = automobile,n = 2))
 ```
 
 The function `plotAll()` visualize the distribution of chosen variables in `automobile`. The function returns a list of plots.
 
 * `make` is a factor, hence presents the barplot.
-
-```{r plotAll, message=FALSE, warning=FALSE, fig.width=6,fig.height=5}
-plots <- plotAll(automobile, c("make","engine-size"))
-
-plots[[1]]
-
-
-```
-
-
 * `engine-size` is continuous, hence presents the histogram and scatterplot with a linear regression line. One continuous variable takes two slots in the returned list.
 
-```{r plotAll-cont, message=FALSE, warning=FALSE,fig.width=6,fig.height=5}
+```{r plotAll, message=FALSE, warning=FALSE, fig.width=6,fig.height=5, eval=FALSE}
+plots <- plotAll(automobile, c("make","engine-size"))
+# access barplot for "make"
+plots[[1]]
+# access histogram for "engine-size"
 plots[[2]]
-```
-
-```{r plotAll-more, message=FALSE, warning=FALSE,fig.width=6,fig.height=5}
+# access scatterplot for "engine-size"
 plots[[3]]
+
+
 ```
 
 

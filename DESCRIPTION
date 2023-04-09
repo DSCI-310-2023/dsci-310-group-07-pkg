@@ -30,4 +30,3 @@ Imports:
     glmnet,
     magrittr
 VignetteBuilder: knitr
-VignetteBuilder: rmarkdown

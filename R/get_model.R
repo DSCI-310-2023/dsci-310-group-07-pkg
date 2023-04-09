@@ -133,8 +133,9 @@ get_trm_tsm <-
 #'
 #' @param x_train_mat training matrix x (explanatory variables)
 #' @param y_train_mat training matrix y (response variable)
-#' @param model whether it is ridge or lasso
-#' @param ask whether it is for plot or the model
+#' @param model whether it is ridge or lasso, lasso by default
+#' @param ask whether it is for plot or the model, modeling by default
+#' @param fig_path directory (in .Rproj) to save the plot, "analysis/figs" by default
 #'
 #' @return a ridge/lasso model/plot depends on the input
 #'
@@ -146,7 +147,8 @@ get_model_plot <-
   function(x_train_mat,
            y_train_mat,
            model = "lasso",
-           ask = "modeling") {
+           ask = "modeling",
+           fig_path = "analysis/figs") {
     set.seed(123)
     if (model == "lasso") {
       lasso_cv <-
@@ -157,8 +159,12 @@ get_model_plot <-
           nfolds = 10
         )
       if (ask == "plot") {
+        full_dir <- here::here(fig_path)
+        if (!dir.exists(full_dir)) {
+          dir.create(full_dir)
+        }
         png(
-          filename = here::here("analysis/figs/lasso.png"),
+          filename = paste0(full_dir,"lasso.png"),
           width = 600,
           height = 400
         )
@@ -195,8 +201,12 @@ get_model_plot <-
           nfolds = 10
         )
       if (ask == "plot") {
+        full_dir <- here::here(fig_path)
+        if (!dir.exists(full_dir)) {
+          dir.create(full_dir)
+        }
         png(
-          filename = here::here("analysis/figs/ridge.png"),
+          filename = paste0(full_dir,"ridge.png"),
           width = 600,
           height = 400
         )
@@ -313,11 +323,11 @@ get_er_cv <-
       #the variable has been removed in order to successfully create our training and testing sets for our OLS model.
 
       #building a matrix for the training set
-      ols_x_red_train <- as.data.frame(train_ols)[, c(1:8, 9:25)]
+      ols_x_red_train <- as.data.frame(train_ols)[, c(1:8, 10:25)]
       ols_x_mat_train <- model.matrix(~ ., ols_x_red_train)
 
       #building a matrix for the testing set
-      ols_x_red_test <- as.data.frame(test_ols)[, c(1:8, 9:25)]
+      ols_x_red_test <- as.data.frame(test_ols)[, c(1:8, 10:25)]
       ols_x_mat_test <- model.matrix(~ ., ols_x_red_test)
 
       # we know that when lambda = 0 and alpha=1, the glmnet() performs the same as lm
