@@ -4,16 +4,24 @@
 \alias{get_model_plot}
 \title{Get models or plots for lasso or ridge}
 \usage{
-get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "modeling")
+get_model_plot(
+  x_train_mat,
+  y_train_mat,
+  model = "lasso",
+  ask = "modeling",
+  fig_path = "analysis/figs"
+)
 }
 \arguments{
 \item{x_train_mat}{training matrix x (explanatory variables)}
 
 \item{y_train_mat}{training matrix y (response variable)}
 
-\item{model}{whether it is ridge or lasso}
+\item{model}{whether it is ridge or lasso, lasso by default}
 
-\item{ask}{whether it is for plot or the model}
+\item{ask}{whether it is for plot or the model, modeling by default}
+
+\item{fig_path}{directory (in .Rproj) to save the plot, "analysis/figs" by default}
 }
 \value{
 a ridge/lasso model/plot depends on the input
