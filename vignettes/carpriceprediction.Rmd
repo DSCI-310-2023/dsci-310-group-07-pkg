@@ -1,0 +1,195 @@
+---
+title: "carpriceprediction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{carpriceprediction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+This vignette contains examples and documentation on how to use **carpriceprediction** package to perform exploratory data analysis (EDA) on the **automobile** dataset, which was created by Jeffrey C. Schlimmer in 1985. The data were collected from [imports-85](https://archive.ics.uci.edu/ml/machine-learning-databases/autos/imports-85.data).
+
+Before EDA, you can obtain the data by either 
+
+* reading the data from [imports-85](https://archive.ics.uci.edu/ml/machine-learning-databases/autos/imports-85.data), or
+* using the [automobile.rds](https://github.com/uliaLiao/dsci-310-group-07-pkg/blob/main/saved/automobile.rds), which is saved as an R object, all the categorical variables are read as factors and all missing values are replaced as `NA`s. 
+
+With this package, you will be able to
+
+* save variables that help generating the report;
+* obtain the first `n` variables that explain most variations of the `price`.
+* visualize the distribution of these `n` variables across dataset. 
+
+## Data
+
+The **automobile** dataset contains 26 rows and 205 observations. The response variable is `price` and the others are explanatory variables. In this example, the dataset is loaded by `readRDS()` from *base R*.
+
+```{r load-automobile, eval=FALSE}
+#install.packages('here')
+automobile <- readRDS(here::here("saved/automobile.rds"))
+head(automobile)
+```
+
+
+```{r setup}
+library(carpriceprediction)
+```
+
+## Functions
+
+### Save Variables
+
+The function `saveVar()` allows you to save the column `price` as a `.rds` file. The `name` should end with `.rds` and cannot be empty, or it may cause error. 
+
+Note that `out_dir` is the path from `.Rproj`. If the `out_dir` does not exists, a new directory will be created when the function is called.
+
+```{r saveVar, eval=FALSE}
+saveVar(var = automobile$price, name = "price.rds", out_dir = "result")
+# will print "price.rds saved to your/absolute/path/.../result"
+# will return "price.rds saved to result"
+```
+
+### $R^2$
+
+The function `getR2()` allows you to get $R^2$ of the first `n` explanatory variables that explain most variations by fitting OLS model. The input variable `n` should be whole numbers from 1 to 25.
+
+```{r getR2, eval=FALSE}
+getR2(dat = automobile,n = 2)
+```
+
+### Distribution of Variables
+
+The function `plotAll()` visualize the distribution of chosen variables in `automobile`. The function returns a list of plots.
+
+* `make` is a factor, hence presents the barplot.
+* `engine-size` is continuous, hence presents the histogram and scatterplot with a linear regression line. One continuous variable takes two slots in the returned list.
+
+```{r plotAll, message=FALSE, warning=FALSE, fig.width=6,fig.height=5, eval=FALSE}
+plots <- plotAll(automobile, c("make","engine-size"))
+# access barplot for "make"
+plots[[1]]
+# access histogram for "engine-size"
+plots[[2]]
+# access scatterplot for "engine-size"
+plots[[3]]
+```
+
+### Split Dataset
+
+Then, we can call the following functions to get the models to predict the car price.
+
+Firstly, since we are using cross-validation. We will split the whole data frame into training set and testing set:
+
+```{r get_tr_tst, eval=FALSE}
+
+# By specifying the set = "basic", the result contains all columns
+training_df<-get_tr_tst(automobile,"basic")[[1]]
+testing_df<-get_tr_tst(automobile,"basic")[[2]] 
+
+# By specifying the set = "at", the result contains all columns except ID
+training_df_at<-get_tr_tst(automobile,"at")[[1]]
+testing_df_at<-get_tr_tst(automobile,"at")[[2]]
+
+# By specifying the set = "sub", the result contains columns except ID or categorical variables with more than 2 levels
+training_df_sub<-get_tr_tst(automobile,"sub")[[1]]
+testing_df_sub<-get_tr_tst(automobile,"sub")[[2]] 
+
+```
+
+### Matrices
+
+Now we can get the matrices using `get_trm_tsm()` for lasso and ridge regression:
+
+Note that *1* for `x`, the explanatory variables; *2* for `y`, the response. We highly recommend using the data frame excluding ID and categorical variables with more than 2 levels to ensure interpretability.
+
+```{r get_trm_tsm, eval=FALSE}
+# training matrices
+training_matrices <- get_trm_tsm(training_df_sub, 
+                                 testing_df_sub, 
+                                 set = "training")
+x_train_mat <- training_matrices[[1]]
+y_train_mat <- training_matrices[[2]]
+
+# testing matrices
+testing_matrices <- get_trm_tsm(training_df_sub, 
+                                testing_df_sub, 
+                                set = "testing")
+x_test_mat <- testing_matrices[[1]]
+y_test_mat <- testing_matrices[[2]]
+
+```
+
+### Fit Models
+
+Use `get_model_plot()` function to train models:
+
+ * `ask = "modeling"`, return models;
+ 
+ * `ask = "plot", fig_path = "analysis/figs"`, save the result to `analysis/figs` as PNG. If you don't specify the `fig_path`, it will create `analysis/figs` directory and save it automatically.
+ 
+For lasso regression:
+
+```{r lasso, eval=FALSE}
+# Lasso regression
+lasso_mods <-
+  get_model_plot(x_train_mat, 
+                 y_train_mat, 
+                 model = "lasso", 
+                 ask = "modeling")
+
+# model with lambda resulting in minimum mse
+lasso_mod <- lasso_mods[[1]]
+
+# model with lambda resulting in (minimum mse + 1SE)
+lasso_mod_1se <- lasso_mods[[2]]
+
+# Training results with all lambdas
+lasso_cv <- lasso_mods[[3]]
+
+# visualize lasso_cv:
+get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")
+
+```
+
+Similarly, for ridge regression:
+
+```{r ridge,eval=FALSE}
+ridge_mods <-
+  get_model_plot(x_train_mat, 
+                 y_train_mat, 
+                 model = "ridge", 
+                 ask = "modeling")
+
+# model with lambda resulting in minimum mse
+ridge_mod <- ridge_mods[[1]]
+
+# model with lambda resulting in (minimum mse + 1SE)
+ridge_mod_1se <- ridge_mods[[2]]
+
+# Training results with all lambdas
+ridge_cv <- ridge_mods[[3]]
+
+# visualize ridge_cv:
+get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")
+```
+
+### Compare Results
+
+We can use `get_er_cv()` to combine all results in a table. Note that it will also contain the *OLS Full Regression* for comparison.
+
+* Column `Model` is the model we trained using the training set;
+
+* Column `R_MSE` is the square root of mean prediction error using the testing set.
+
+```{r err,eval=FALSE}
+get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
+
+```
