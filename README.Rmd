@@ -161,12 +161,7 @@ get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
 ```
 
 ## Code of Conduct
-  
-Please note that the project is released with a Code of Conduct adapted from the [Contributor Covenant][homepage],
-version 2.1, available at
-[https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1]. By contributing to this project, you agree to abide by its terms.
 
+Please note that the carpriceprediction project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
 
-[homepage]: https://www.contributor-covenant.org
-[v2.1]: https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
 
