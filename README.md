@@ -206,11 +206,11 @@ get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
 #> # A tibble: 5 × 2
 #>   Model                             R_MSE
 #>   <chr>                             <dbl>
-#> 1 LASSO Regression with minimum MSE 812. 
-#> 2 LASSO Regression with 1SE MSE     709. 
-#> 3 Ridge Regression with minimum MSE 808. 
-#> 4 LASSO Regression with 1SE MSE     856. 
-#> 5 OLS Full Regression                33.5
+#> 1 LASSO Regression with minimum MSE  812.
+#> 2 LASSO Regression with 1SE MSE      709.
+#> 3 Ridge Regression with minimum MSE  808.
+#> 4 LASSO Regression with 1SE MSE      856.
+#> 5 OLS Full Regression                783.
 
 # Will return: 
 #                               Model    R_MSE

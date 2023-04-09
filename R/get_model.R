@@ -323,11 +323,11 @@ get_er_cv <-
       #the variable has been removed in order to successfully create our training and testing sets for our OLS model.
 
       #building a matrix for the training set
-      ols_x_red_train <- as.data.frame(train_ols)[, c(1:8, 10:25)]
+      ols_x_red_train <- as.data.frame(train_ols)[, 1:24]
       ols_x_mat_train <- model.matrix(~ ., ols_x_red_train)
 
       #building a matrix for the testing set
-      ols_x_red_test <- as.data.frame(test_ols)[, c(1:8, 10:25)]
+      ols_x_red_test <- as.data.frame(test_ols)[, 1:24]
       ols_x_mat_test <- model.matrix(~ ., ols_x_red_test)
 
       # we know that when lambda = 0 and alpha=1, the glmnet() performs the same as lm

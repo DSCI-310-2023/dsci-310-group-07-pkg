@@ -183,13 +183,6 @@ We can use `get_er_cv()` to combine all results in a table. Note that it will al
 ```{r err,eval=TRUE}
 get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
 
-# Will return: 
-#                               Model    R_MSE
-# 1 LASSO Regression with minimum MSE 812.0043
-# 2     LASSO Regression with 1SE MSE 709.0545
-# 3 Ridge Regression with minimum MSE 808.4589
-# 4     LASSO Regression with 1SE MSE 855.7711
-# 5               OLS Full Regression 782.8616
 ```
 
 ## Code of Conduct
