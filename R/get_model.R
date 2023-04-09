@@ -164,7 +164,7 @@ get_model_plot <-
           dir.create(full_dir)
         }
         png(
-          filename = paste0(full_dir,"lasso.png"),
+          filename = paste0(full_dir,"/","lasso.png"),
           width = 600,
           height = 400
         )
@@ -206,7 +206,7 @@ get_model_plot <-
           dir.create(full_dir)
         }
         png(
-          filename = paste0(full_dir,"ridge.png"),
+          filename = paste0(full_dir,"/","ridge.png"),
           width = 600,
           height = 400
         )
