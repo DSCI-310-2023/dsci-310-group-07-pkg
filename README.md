@@ -22,7 +22,7 @@ You can install the development version of carpriceprediction from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("uliaLiao/dsci-310-group-07-pkg")
+devtools::install_github("DSCI-310/dsci-310-group-07-pkg")
 ```
 
 ## Usage
