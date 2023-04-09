@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 ![](https://github.com/uliaLiao/dsci-310-group-07-pkg/actions/workflows/test-coverage.yaml/badge.svg)
+![](https://codecov.io/gh/uliaLiao/dsci-310-group-07-pkg/branch/main/graph/badge.svg)
 <!-- badges: end -->
 
 This package is designed to assist in the exploration and visualization of data related to car attributes such as make, length, and other important factors that can affect pricing. The functions within the package allow users to preprocess the data, perform regression analysis, and evaluate model performance. 
@@ -39,24 +40,16 @@ In order to use the functions in the package, load the `carpriceprediction` libr
 library(carpriceprediction)
 ```
 
+### Data
+
 In this example, we will use the actual `automobile` dataset. And the first 6 lines of `automobile` is as follows:
 
 ```{r load-automobile, echo=FALSE}
 automobile <- readRDS(here::here("saved/automobile.rds"))
 head(automobile)
 ```
-We can save `automobile_example` as a `.rds` file:
 
-
-```{r saveVar, eval=FALSE}
-saveVar(automobile, "automobile_example.rds", "result")
-
-# will print "automobile_example.rds saved to your/absolute/path/.../result"
-# will return "automobile_example.rds saved to result"
-
-```
-
-We can get $R^2$ of the first `n` explanatory variables that explain most variations by fitting OLS model:
+### EDA
 
 ```{r getR2}
 n <- 2 # n should be no larger than 25
@@ -64,7 +57,6 @@ n <- 2 # n should be no larger than 25
 
 ```
 
-We can also visualize the distribution of the two variables in `automobile`:
 
 ```{r plotAll, message=FALSE, warning=FALSE}
 plots <- plotAll(automobile, c("make","engine-size"))
@@ -73,17 +65,16 @@ plots[[1]]
 
 
 ```
+
 ```{r plotAll-cont, message=FALSE, warning=FALSE}
 # `engine-size` is continuous, henshow show the histogram and scatterplot with a linear regression line
 plots[[2]]
 plots[[3]]
 ```
 
-Then, we can call the following functions to get the models to predict the car price.
+### Fit models
 
-Firstly, since we are using cross-validation. We will split the whole data frame into training set and testing set:
-
-```{r get_tr_tst, eval=FALSE}
+```{r get_tr_tst, eval=TRUE}
 
 # By specifying the set = "basic", the result contains all columns
 training_df<-get_tr_tst(automobile,"basic")[[1]]
@@ -99,11 +90,8 @@ testing_df_sub<-get_tr_tst(automobile,"sub")[[2]]
 
 ```
 
-Now we can get the matrices using `get_trm_tsm()` for lasso and ridge regression:
 
-Note that *1* for `x`, the explanatory variables; *2* for `y`, the response. We highly recommend using the data frame excluding ID and categorical variables with more than 2 levels to ensure interpretability.
-
-```{r get_trm_tsm, eval=FALSE}
+```{r get_trm_tsm, eval=TRUE}
 # training matrices
 training_matrices <- get_trm_tsm(training_df_sub, 
                                  testing_df_sub, 
@@ -120,15 +108,9 @@ y_test_mat <- testing_matrices[[2]]
 
 ```
 
-Use `get_model_plot()` function to train models:
+Lasso regression:
 
- * `ask = "modeling"`, return models;
- 
- * `ask = "plot"`, visualize the result.
- 
-For lasso regression:
-
-```{r lasso, eval=FALSE}
+```{r lasso, eval=TRUE}
 # Lasso regression
 lasso_mods <-
   get_model_plot(x_train_mat, 
@@ -146,13 +128,13 @@ lasso_mod_1se <- lasso_mods[[2]]
 lasso_cv <- lasso_mods[[3]]
 
 # visualize lasso_cv:
-get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")
+# get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")
 
 ```
 
-Similarly, for ridge regression:
+Ridge regression:
 
-```{r ridge,eval=FALSE}
+```{r ridge,eval=TRUE}
 ridge_mods <-
   get_model_plot(x_train_mat, 
                  y_train_mat, 
@@ -169,26 +151,13 @@ ridge_mod_1se <- ridge_mods[[2]]
 ridge_cv <- ridge_mods[[3]]
 
 # visualize ridge_cv:
-get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")
+# get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")
 ```
 
+Performance of different models:
 
-We can use `get_er_cv()` to combine all results in a table. Note that it will also contain the *OLS Full Regression* for comparison.
-
-* Column `Model` is the model we trained using the training set;
-
-* Column `R_MSE` is the square root of mean prediction error using the testing set.
-
-```{r err,eval=FALSE}
+```{r err,eval=TRUE}
 get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
-
-# Will return: 
-#                               Model    R_MSE
-# 1 LASSO Regression with minimum MSE 812.0043
-# 2     LASSO Regression with 1SE MSE 709.0545
-# 3 Ridge Regression with minimum MSE 808.4589
-# 4     LASSO Regression with 1SE MSE 855.7711
-# 5               OLS Full Regression 782.8616
 ```
 
 ## Code of Conduct

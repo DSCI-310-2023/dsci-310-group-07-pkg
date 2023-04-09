@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 ![](https://github.com/uliaLiao/dsci-310-group-07-pkg/actions/workflows/test-coverage.yaml/badge.svg)
+![](https://codecov.io/gh/uliaLiao/dsci-310-group-07-pkg/branch/main/graph/badge.svg)
 <!-- badges: end -->
 
 This package is designed to assist in the exploration and visualization
@@ -33,6 +34,8 @@ In order to use the functions in the package, load the
 library(carpriceprediction)
 ```
 
+### Data
+
 In this example, we will use the actual `automobile` dataset. And the
 first 6 lines of `automobile` is as follows:
 
@@ -53,17 +56,7 @@ first 6 lines of `automobile` is as follows:
     #> #   variable names ¹​symboling, ²​`normalized-losses`, ³​`fuel-type`, ⁴​aspiration,
     #> #   ⁵​`num-of-doors`, ⁶​`body-style`, ⁷​`drive-wheels`, ⁸​`engine-location`, …
 
-We can save `automobile_example` as a `.rds` file:
-
-``` r
-saveVar(automobile, "automobile_example.rds", "result")
-
-# will print "automobile_example.rds saved to your/absolute/path/.../result"
-# will return "automobile_example.rds saved to result"
-```
-
-We can get $R^2$ of the first `n` explanatory variables that explain
-most variations by fitting OLS model:
+### EDA
 
 ``` r
 n <- 2 # n should be no larger than 25
@@ -72,9 +65,6 @@ n <- 2 # n should be no larger than 25
 #> 1 0.796        make
 #> 2 0.761 engine-size
 ```
-
-We can also visualize the distribution of the two variables in
-`automobile`:
 
 ``` r
 plots <- plotAll(automobile, c("make","engine-size"))
@@ -97,11 +87,7 @@ plots[[3]]
 
 <img src="man/figures/README-plotAll-cont-2.png" width="100%" />
 
-Then, we can call the following functions to get the models to predict
-the car price.
-
-Firstly, since we are using cross-validation. We will split the whole
-data frame into training set and testing set:
+### Fit models
 
 ``` r
 
@@ -117,14 +103,6 @@ testing_df_at<-get_tr_tst(automobile,"at")[[2]]
 training_df_sub<-get_tr_tst(automobile,"sub")[[1]]
 testing_df_sub<-get_tr_tst(automobile,"sub")[[2]] 
 ```
-
-Now we can get the matrices using `get_trm_tsm()` for lasso and ridge
-regression:
-
-Note that *1* for `x`, the explanatory variables; *2* for `y`, the
-response. We highly recommend using the data frame excluding ID and
-categorical variables with more than 2 levels to ensure
-interpretability.
 
 ``` r
 # training matrices
@@ -142,13 +120,7 @@ x_test_mat <- testing_matrices[[1]]
 y_test_mat <- testing_matrices[[2]]
 ```
 
-Use `get_model_plot()` function to train models:
-
-- `ask = "modeling"`, return models;
-
-- `ask = "plot"`, visualize the result.
-
-For lasso regression:
+Lasso regression:
 
 ``` r
 # Lasso regression
@@ -168,10 +140,10 @@ lasso_mod_1se <- lasso_mods[[2]]
 lasso_cv <- lasso_mods[[3]]
 
 # visualize lasso_cv:
-get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")
+# get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")
 ```
 
-Similarly, for ridge regression:
+Ridge regression:
 
 ``` r
 ridge_mods <-
@@ -190,27 +162,21 @@ ridge_mod_1se <- ridge_mods[[2]]
 ridge_cv <- ridge_mods[[3]]
 
 # visualize ridge_cv:
-get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")
+# get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")
 ```
 
-We can use `get_er_cv()` to combine all results in a table. Note that it
-will also contain the *OLS Full Regression* for comparison.
-
-- Column `Model` is the model we trained using the training set;
-
-- Column `R_MSE` is the square root of mean prediction error using the
-  testing set.
+Performance of different models:
 
 ``` r
 get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
-
-# Will return: 
-#                               Model    R_MSE
-# 1 LASSO Regression with minimum MSE 812.0043
-# 2     LASSO Regression with 1SE MSE 709.0545
-# 3 Ridge Regression with minimum MSE 808.4589
-# 4     LASSO Regression with 1SE MSE 855.7711
-# 5               OLS Full Regression 782.8616
+#> # A tibble: 5 × 2
+#>   Model                             R_MSE
+#>   <chr>                             <dbl>
+#> 1 LASSO Regression with minimum MSE  812.
+#> 2 LASSO Regression with 1SE MSE      709.
+#> 3 Ridge Regression with minimum MSE  808.
+#> 4 LASSO Regression with 1SE MSE      856.
+#> 5 OLS Full Regression                783.
 ```
 
 ## Code of Conduct
