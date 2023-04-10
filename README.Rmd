@@ -45,16 +45,14 @@ library(carpriceprediction)
 In this example, we will use the actual `automobile` dataset. And the first 6 lines of `automobile` is as follows:
 
 ```{r load-automobile, echo=FALSE}
-automobile <- readRDS(here::here("saved/automobile.rds"))
+data("automobile")
 head(automobile)
 ```
 
 ### EDA
 
 ```{r getR2}
-n <- 2 # n should be no larger than 25
-(getR2(automobile,n))
-
+(getR2(automobile,n = 2))
 ```
 
 
@@ -62,8 +60,6 @@ n <- 2 # n should be no larger than 25
 plots <- plotAll(automobile, c("make","engine-size"))
 # `make` is a factor, hence show the barplot
 plots[[1]]
-
-
 ```
 
 ```{r plotAll-cont, message=FALSE, warning=FALSE}
