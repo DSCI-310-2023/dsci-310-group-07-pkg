@@ -49,6 +49,16 @@ data("automobile")
 head(automobile)
 ```
 
+You can save variables with 
+```{r saveVar, eval=FALSE}
+saveVar(var = automobile$price, name = "price.rds", out_dir = "result")
+# will print "price.rds saved to your/absolute/path/.../result"
+# will return "price.rds saved to result"
+```
+
+which is similar to `saveRDS` in base R, except that `saveVar` will create the output directory if it does not exist.
+
+
 ### EDA
 
 ```{r getR2}

@@ -56,6 +56,17 @@ first 6 lines of `automobile` is as follows:
     #> #   variable names ¹​symboling, ²​`normalized-losses`, ³​`fuel-type`, ⁴​aspiration,
     #> #   ⁵​`num-of-doors`, ⁶​`body-style`, ⁷​`drive-wheels`, ⁸​`engine-location`, …
 
+You can save variables with
+
+``` r
+saveVar(var = automobile$price, name = "price.rds", out_dir = "result")
+# will print "price.rds saved to your/absolute/path/.../result"
+# will return "price.rds saved to result"
+```
+
+which is similar to `saveRDS` in base R, except that `saveVar` will
+create the output directory if it does not exist.
+
 ### EDA
 
 ``` r
