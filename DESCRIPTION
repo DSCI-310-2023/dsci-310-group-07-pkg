@@ -1,6 +1,6 @@
 Package: carpriceprediction
 Title: Predict Car Price Based on Certain Charateristics
-Version: 1.0.0
+Version: 0.1.0
 Authors@R: c(
     person("Jiaying", "Liao", , "jiaying.liao@qq.com", role = c("aut", "cre")),
     person("Ning", "Wang", ,"1198137403wn@gmail.com",  role = "aut"),
