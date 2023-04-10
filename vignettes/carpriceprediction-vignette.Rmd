@@ -34,7 +34,13 @@ The **automobile** dataset contains 26 rows and 205 observations. The response v
 
 ```{r load-automobile, eval=FALSE}
 #install.packages('here')
-automobile <- readRDS(here::here("saved/automobile.rds"))
+#install.packages('fs')
+library(fs)
+proj_root <- here()
+proj_files <- dir_ls(path = proj_root)
+saved_path <- path(proj_root, "saved")
+saved_files <- dir_ls(path = saved_path)
+automobile <- readRDS(path(saved_path, "automobile.rds"))
 head(automobile)
 ```
 
