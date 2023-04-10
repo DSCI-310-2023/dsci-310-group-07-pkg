@@ -59,8 +59,7 @@ first 6 lines of `automobile` is as follows:
 ### EDA
 
 ``` r
-n <- 2 # n should be no larger than 25
-(getR2(automobile,n))
+(getR2(automobile,n = 2))
 #>   r_sqr       names
 #> 1 0.796        make
 #> 2 0.761 engine-size
@@ -172,11 +171,11 @@ get_er_cv(training_df_at, training_df_sub, kfolds = 10, lasso_cv, ridge_cv)
 #> # A tibble: 5 × 2
 #>   Model                             R_MSE
 #>   <chr>                             <dbl>
-#> 1 LASSO Regression with minimum MSE  812.
-#> 2 LASSO Regression with 1SE MSE      709.
-#> 3 Ridge Regression with minimum MSE  808.
-#> 4 LASSO Regression with 1SE MSE      856.
-#> 5 OLS Full Regression                783.
+#> 1 LASSO Regression with minimum MSE  671.
+#> 2 LASSO Regression with 1SE MSE      810.
+#> 3 Ridge Regression with minimum MSE  658.
+#> 4 LASSO Regression with 1SE MSE      846.
+#> 5 OLS Full Regression               1052.
 ```
 
 ## Code of Conduct
