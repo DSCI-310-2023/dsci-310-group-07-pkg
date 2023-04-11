@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">carpriceprediction</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,32 +96,38 @@
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `city-mpg` &lt;dbl&gt;, `highway-mpg` &lt;dbl&gt;, price &lt;dbl&gt;, and abbreviated</span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   variable names ¹​symboling, ²​`normalized-losses`, ³​`fuel-type`, ⁴​aspiration,</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁵​`num-of-doors`, ⁶​`body-style`, ⁷​`drive-wheels`, ⁸​`engine-location`, …</span></span></code></pre></div>
+<p>You can save variables with</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/saveVar.html">saveVar</a></span><span class="op">(</span>var <span class="op">=</span> <span class="va">automobile</span><span class="op">$</span><span class="va">price</span>, name <span class="op">=</span> <span class="st">"price.rds"</span>, out_dir <span class="op">=</span> <span class="st">"result"</span><span class="op">)</span></span>
+<span><span class="co"># will print "price.rds saved to your/absolute/path/.../result"</span></span>
+<span><span class="co"># will return "price.rds saved to result"</span></span></code></pre></div>
+<p>which is similar to <code>saveRDS</code> in base R, except that <code>saveVar</code> will create the output directory if it does not exist.</p>
 </div>
 <div class="section level3">
 <h3 id="eda">EDA<a class="anchor" aria-label="anchor" href="#eda"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="fu"><a href="reference/getR2.html">getR2</a></span><span class="op">(</span><span class="va">automobile</span>,n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   r_sqr       names</span></span>
 <span><span class="co">#&gt; 1 0.796        make</span></span>
 <span><span class="co">#&gt; 2 0.761 engine-size</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plotAll.html">plotAll</a></span><span class="op">(</span><span class="va">automobile</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"make"</span>,<span class="st">"engine-size"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># `make` is a factor, hence show the barplot</span></span>
 <span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <p><img src="reference/figures/README-plotAll-1.png" width="100%"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># `engine-size` is continuous, henshow show the histogram and scatterplot with a linear regression line</span></span>
 <span><span class="va">plots</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <p><img src="reference/figures/README-plotAll-cont-1.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plots</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <p><img src="reference/figures/README-plotAll-cont-2.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="fit-models">Fit models<a class="anchor" aria-label="anchor" href="#fit-models"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># By specifying the set = "basic", the result contains all columns</span></span>
 <span><span class="va">training_df</span><span class="op">&lt;-</span><span class="fu"><a href="reference/get_tr_tst.html">get_tr_tst</a></span><span class="op">(</span><span class="va">automobile</span>,<span class="st">"basic"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -134,7 +140,7 @@
 <span><span class="co"># By specifying the set = "sub", the result contains columns except ID or categorical variables with more than 2 levels</span></span>
 <span><span class="va">training_df_sub</span><span class="op">&lt;-</span><span class="fu"><a href="reference/get_tr_tst.html">get_tr_tst</a></span><span class="op">(</span><span class="va">automobile</span>,<span class="st">"sub"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">testing_df_sub</span><span class="op">&lt;-</span><span class="fu"><a href="reference/get_tr_tst.html">get_tr_tst</a></span><span class="op">(</span><span class="va">automobile</span>,<span class="st">"sub"</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> </span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># training matrices</span></span>
 <span><span class="va">training_matrices</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_trm_tsm.html">get_trm_tsm</a></span><span class="op">(</span><span class="va">training_df_sub</span>, </span>
 <span>                                 <span class="va">testing_df_sub</span>, </span>
@@ -149,7 +155,7 @@
 <span><span class="va">x_test_mat</span> <span class="op">&lt;-</span> <span class="va">testing_matrices</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">y_test_mat</span> <span class="op">&lt;-</span> <span class="va">testing_matrices</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <p>Lasso regression:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lasso regression</span></span>
 <span><span class="va">lasso_mods</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="reference/get_model_plot.html">get_model_plot</a></span><span class="op">(</span><span class="va">x_train_mat</span>, </span>
@@ -169,7 +175,7 @@
 <span><span class="co"># visualize lasso_cv:</span></span>
 <span><span class="co"># get_model_plot(x_train_mat, y_train_mat, model = "lasso", ask = "plot")</span></span></code></pre></div>
 <p>Ridge regression:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ridge_mods</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="reference/get_model_plot.html">get_model_plot</a></span><span class="op">(</span><span class="va">x_train_mat</span>, </span>
 <span>                 <span class="va">y_train_mat</span>, </span>
@@ -188,7 +194,7 @@
 <span><span class="co"># visualize ridge_cv:</span></span>
 <span><span class="co"># get_model_plot(x_train_mat, y_train_mat, model = "ridge", ask = "plot")</span></span></code></pre></div>
 <p>Performance of different models:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/get_er_cv.html">get_er_cv</a></span><span class="op">(</span><span class="va">training_df_at</span>, <span class="va">training_df_sub</span>, kfolds <span class="op">=</span> <span class="fl">10</span>, <span class="va">lasso_cv</span>, <span class="va">ridge_cv</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 2</span></span>
 <span><span class="co">#&gt;   Model                             R_MSE</span></span>

@@ -13,7 +13,9 @@ This package is designed to assist in the exploration and visualization
 of data related to car attributes such as make, length, and other
 important factors that can affect pricing. The functions within the
 package allow users to preprocess the data, perform regression analysis,
-and evaluate model performance.
+and evaluate model performance. The
+[vignettes](https://github.com/DSCI-310/dsci-310-group-07-pkg/blob/main/docs/articles/carpriceprediction-vignette.html)
+provides more detailed information about the usage.
 
 ## Installation
 
